@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing"
+	"gopkg.in/src-d/go-git.v4/plumbing/filemode"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/format/index"
 )
@@ -32,13 +33,16 @@ func main(){
 	if err != nil {
 		panic(err)
 	}
+
+	var  fileName string = "repotest.go"
+	var  fileType uint32 = 0100664
 	
 // git hash-object ...
 	//reader := strings.NewReader("last test of encapsulation??")
 	//byteArr, err := ioutil.ReadFile("testCad.dwg")
 	//reader := bytes.NewReader(byteArr)
 	// django 에서 go 서버로 오는건 byte 배열 ...
-	var  fileName string = "repotest.go"
+	
 	byteArr, err := ioutil.ReadFile(fileName)
 	reader := bytes.NewReader(byteArr)
 	
@@ -80,7 +84,7 @@ e.Hash = h
 e.ModifiedAt = time.Now()
 //e.Mode, err = filemode.NewFromOSFileMode(info.Mode())
 //클라이언트에서 파일모드 보내주는 걸로 ....
-e.Mode = 100644
+e.Mode = filemode.FileMode(fileType)
 
 if e.Mode == 100644 {
 	e.Size = uint32(int64(reader.Len()))
